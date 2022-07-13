@@ -12,7 +12,7 @@ import { v4 } from 'uuid';
 @Injectable()
 export class UsersService {
   create(newUserDto: CreateUserDto) {
-    let newUser = new User();
+    let newUser = new User({});
     newUser.id = v4();
     newUser = {
       ...newUser,
@@ -22,8 +22,7 @@ export class UsersService {
       updatedAt: +Date.now(),
     };
     users.push(newUser);
-    const { password, ...rawUser } = newUser;
-    return rawUser;
+    return newUser;
   }
 
   findAll() {
@@ -35,8 +34,7 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    const { password, ...rawUser } = user;
-    return rawUser;
+    return user;
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {
@@ -50,8 +48,7 @@ export class UsersService {
     updatedUser.password = updateUserDto.newPassword;
     updatedUser.version = updatedUser.version + 1;
     updatedUser.updatedAt = +Date.now();
-    const { password, ...rawUser } = updatedUser;
-    return rawUser;
+    return updatedUser;
   }
 
   remove(id: string) {
