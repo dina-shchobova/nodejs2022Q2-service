@@ -8,16 +8,22 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { users } from '../data/data';
 import { User } from './entities/user.entity';
 import { v4 } from 'uuid';
-import { checkId } from '../utils/checkId';
 
 @Injectable()
 export class UsersService {
   create(newUserDto: CreateUserDto) {
     let newUser = new User();
     newUser.id = v4();
-    newUser = { ...newUser, ...newUserDto };
+    newUser = {
+      ...newUser,
+      ...newUserDto,
+      version: 1,
+      createdAt: +Date.now(),
+      updatedAt: +Date.now(),
+    };
     users.push(newUser);
-    return newUser;
+    const { password, ...rawUser } = newUser;
+    return rawUser;
   }
 
   findAll() {
@@ -25,17 +31,16 @@ export class UsersService {
   }
 
   findOne(id: string) {
-    checkId(id);
     const user = users.find((user) => user.id === id);
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    return user;
+    const { password, ...rawUser } = user;
+    return rawUser;
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {
     const updatedUser = users.find((user) => user.id === id);
-    checkId(id);
     if (!updatedUser) {
       throw new NotFoundException('User not found');
     }
@@ -44,12 +49,13 @@ export class UsersService {
     }
     updatedUser.password = updateUserDto.newPassword;
     updatedUser.version = updatedUser.version + 1;
-    return updatedUser;
+    updatedUser.updatedAt = +Date.now();
+    const { password, ...rawUser } = updatedUser;
+    return rawUser;
   }
 
   remove(id: string) {
     const updatedUserIndex: number = users.findIndex((user) => user.id === id);
-    checkId(id);
     if (updatedUserIndex === -1) {
       throw new NotFoundException('User not found');
     }
