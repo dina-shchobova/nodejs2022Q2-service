@@ -6,3 +6,9 @@ export interface User {
   createdAt: number;
   updatedAt: number;
 }
+
+export interface Artist {
+  id: string;
+  name: string;
+  grammy: boolean;
+}
