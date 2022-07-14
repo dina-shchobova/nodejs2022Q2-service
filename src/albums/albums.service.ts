@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
-import { albums } from '../data/data';
+import { albums, tracks } from '../data/data';
 import { v4 } from 'uuid';
 import { Album } from './entities/album.entity';
 
@@ -40,6 +40,10 @@ export class AlbumsService {
       throw new NotFoundException('Album not found');
     }
     albums.splice(deletedAlbumIndex, 1);
+    const trackIndex = tracks.findIndex((track) => track.albumId === id);
+    if (trackIndex !== -1) {
+      tracks[trackIndex].albumId = null;
+    }
     return `The album was deleted`;
   }
 }
