@@ -29,10 +29,17 @@ export class UsersController {
     });
   }
 
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get()
   @HttpCode(200)
   findAll() {
-    return this.usersService.findAll();
+    const users = this.usersService.findAll();
+    return users.map(
+      (user) =>
+        new User({
+          ...user,
+        }),
+    );
   }
 
   @UseInterceptors(ClassSerializerInterceptor)
@@ -51,7 +58,6 @@ export class UsersController {
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    console.log('updateUserDto = ', updateUserDto);
     return new User({
       ...this.usersService.update(id, updateUserDto),
     });
