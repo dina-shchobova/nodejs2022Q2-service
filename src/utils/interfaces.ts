@@ -19,3 +19,11 @@ export interface IAlbum {
   year: number;
   artistId: string | null;
 }
+
+export interface ITrack {
+  id: string;
+  name: string;
+  artistId: string | null;
+  albumId: string | null;
+  duration: number;
+}
