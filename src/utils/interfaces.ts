@@ -12,3 +12,10 @@ export interface Artist {
   name: string;
   grammy: boolean;
 }
+
+export interface IAlbum {
+  id: string;
+  name: string;
+  year: number;
+  artistId: string | null;
+}
