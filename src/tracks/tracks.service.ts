@@ -3,7 +3,7 @@ import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { Track } from './entities/track.entity';
 import { v4 } from 'uuid';
-import { tracks } from '../data/data';
+import { favs, tracks } from '../data/data';
 
 @Injectable()
 export class TracksService {
@@ -40,6 +40,9 @@ export class TracksService {
       throw new NotFoundException('Track not found');
     }
     tracks.splice(deletedTrackIndex, 1);
-    return `The track was deleted`;
+    const favTrackIndex = favs.tracks.findIndex((trackId) => trackId === id);
+    if (favTrackIndex !== -1) {
+      favs.tracks.splice(favTrackIndex, 1);
+    }
   }
 }

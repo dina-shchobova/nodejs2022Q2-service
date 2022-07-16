@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
-import { albums, tracks } from '../data/data';
+import { albums, favs, tracks } from '../data/data';
 import { v4 } from 'uuid';
 import { Album } from './entities/album.entity';
 
@@ -44,6 +44,9 @@ export class AlbumsService {
     if (trackIndex !== -1) {
       tracks[trackIndex].albumId = null;
     }
-    return `The album was deleted`;
+    const favAlbumIndex = favs.albums.findIndex((albumId) => albumId === id);
+    if (favAlbumIndex !== -1) {
+      favs.albums.splice(favAlbumIndex, 1);
+    }
   }
 }

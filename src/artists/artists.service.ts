@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
-import { artists, tracks } from '../data/data';
+import { artists, favs, tracks } from '../data/data';
 import { v4 } from 'uuid';
 import { Artist } from './entities/artist.entity';
 
@@ -44,6 +44,11 @@ export class ArtistsService {
     if (trackIndex !== -1) {
       tracks[trackIndex].artistId = null;
     }
-    return `The artist with id = ${id} was deleted`;
+    const favArtistIndex = favs.artists.findIndex(
+      (artistId) => artistId === id,
+    );
+    if (favArtistIndex !== -1) {
+      favs.artists.splice(favArtistIndex, 1);
+    }
   }
 }
