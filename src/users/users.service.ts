@@ -57,6 +57,5 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
     users.splice(updatedUserIndex, 1);
-    return `${id} user was deleted`;
   }
 }
