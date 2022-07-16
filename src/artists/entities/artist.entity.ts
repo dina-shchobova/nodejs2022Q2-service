@@ -1,6 +1,7 @@
 import { CreateArtistDto } from '../dto/create-artist.dto';
+import { IArtist } from '../../utils/interfaces';
 
-export class Artist {
+export class Artist implements IArtist {
   id: string;
   name: string;
   grammy: boolean;
