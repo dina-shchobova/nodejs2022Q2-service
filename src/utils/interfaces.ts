@@ -1,4 +1,4 @@
-export interface User {
+export interface IUser {
   id: string;
   login: string;
   password: string;
@@ -7,7 +7,7 @@ export interface User {
   updatedAt: number;
 }
 
-export interface Artist {
+export interface IArtist {
   id: string;
   name: string;
   grammy: boolean;
@@ -35,7 +35,7 @@ export interface IFavorites {
 }
 
 export interface IFavoritesResponse {
-  artists: Artist[];
+  artists: IArtist[];
   albums: IAlbum[];
   tracks: ITrack[];
 }
