@@ -27,3 +27,15 @@ export interface ITrack {
   albumId: string | null;
   duration: number;
 }
+
+export interface IFavorites {
+  artists: string[];
+  albums: string[];
+  tracks: string[];
+}
+
+export interface IFavoritesResponse {
+  artists: Artist[];
+  albums: IAlbum[];
+  tracks: ITrack[];
+}
