@@ -6,10 +6,16 @@
 - Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
 
 ## Downloading
+1. Change the current working directory to the location where you want the cloned directory.
+2. Clone a repo
+```
+git clone git@github.com:dina-shchobova/nodejs2022Q2-service.git
+```
+3. Go to development branch 
+```
+git checkout develop
+```
 
-```
-git clone {repository URL}
-```
 
 ## Installing NPM modules
 
