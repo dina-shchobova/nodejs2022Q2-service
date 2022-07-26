@@ -15,7 +15,13 @@ async function bootstrap() {
 
   const document = parse(DOC_API);
 
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      validatorPackage: require('@nestjs/class-validator'),
+      // transformerPackage: require('@nestjs/class-transformer'),
+    }),
+  );
   SwaggerModule.setup('doc', app, document);
   await app.listen(PORT);
 }
