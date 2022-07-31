@@ -6,9 +6,9 @@
 ```
 git clone git@github.com:dina-shchobova/nodejs2022Q2-service.git
 ```
-3. Go to containerization-dev branch 
+3. Go to postgreSQL_ORM branch 
 ```
-git checkout containerization-dev
+git checkout postgreSQL_ORM
 ```
 
 ### Installing NPM modules
