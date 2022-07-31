@@ -3,6 +3,8 @@ import { DataSource } from 'typeorm';
 import { Artist } from './artists/entities/artist.entity';
 import { User } from './users/entities/user.entity';
 import { Album } from './albums/entities/album.entity';
+import { Track } from './tracks/entities/track.entity';
+import { Favorite } from './favorites/entities/favorites.entity';
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
@@ -13,6 +15,6 @@ export const AppDataSource = new DataSource({
   database: 'postgres',
   synchronize: false,
   logging: true,
-  entities: [User, Artist, Album],
+  entities: [User, Artist, Album, Track, Favorite],
   migrations: [],
 });

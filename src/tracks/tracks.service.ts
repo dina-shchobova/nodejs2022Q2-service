@@ -2,47 +2,46 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { Track } from './entities/track.entity';
-import { v4 } from 'uuid';
-import { favs, tracks } from '../data/data';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class TracksService {
-  create(createTrackDto: CreateTrackDto) {
-    const newTrack = new Track(v4(), createTrackDto);
-    tracks.push(newTrack);
-    return newTrack;
+  constructor(
+    @InjectRepository(Track)
+    private tracksRepository: Repository<Track>,
+  ) {}
+
+  async create(createTrackDto: CreateTrackDto) {
+    const newTrack = this.tracksRepository.create(createTrackDto);
+    return await this.tracksRepository.save(newTrack);
   }
 
-  findAll() {
-    return tracks;
+  async findAll() {
+    return await this.tracksRepository.find();
   }
 
-  findOne(id: string) {
-    const track = tracks.find((track) => track.id === id);
+  async findOne(id: string) {
+    const track = await this.tracksRepository.findOne({ where: { id: id } });
     if (!track) {
       throw new NotFoundException('Track not found');
     }
     return track;
   }
 
-  update(id: string, updateTrackDto: UpdateTrackDto) {
-    let track = tracks.find((track) => track.id === id);
+  async update(id: string, updateTrackDto: UpdateTrackDto) {
+    let track = await this.tracksRepository.findOne({ where: { id: id } });
     if (!track) {
       throw new NotFoundException('Track not found');
     }
     track = { ...track, ...updateTrackDto };
-    return track;
+    return await this.tracksRepository.save(track);
   }
 
-  remove(id: string) {
-    const deletedTrackIndex = tracks.findIndex((track) => track.id === id);
-    if (deletedTrackIndex === -1) {
+  async remove(id: string) {
+    const result = await this.tracksRepository.delete({ id });
+    if (result.affected === 0) {
       throw new NotFoundException('Track not found');
-    }
-    tracks.splice(deletedTrackIndex, 1);
-    const favTrackIndex = favs.tracks.findIndex((trackId) => trackId === id);
-    if (favTrackIndex !== -1) {
-      favs.tracks.splice(favTrackIndex, 1);
     }
   }
 }
