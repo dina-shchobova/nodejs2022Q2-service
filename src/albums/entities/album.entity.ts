@@ -1,16 +1,25 @@
 import { IAlbum } from '../../utils/interfaces';
-import { CreateAlbumDto } from '../dto/create-album.dto';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Artist } from '../../artists/entities/artist.entity';
 
+@Entity('album')
 export class Album implements IAlbum {
+  @PrimaryGeneratedColumn('uuid')
   id: string;
-  name: string;
-  year: number;
-  artistId: string | null;
 
-  constructor(id: string, createAlbumDto: CreateAlbumDto) {
-    this.id = id;
-    this.name = createAlbumDto.name;
-    this.year = createAlbumDto.year;
-    this.artistId = createAlbumDto.artistId;
-  }
+  @Column()
+  name: string;
+
+  @Column()
+  year: number;
+
+  @ManyToOne(() => Artist, (artist) => artist.id, {
+    nullable: true,
+    onDelete: 'SET NULL',
+    cascade: ['insert', 'update', 'remove'],
+  })
+  artist: string;
+
+  @Column({ nullable: true })
+  artistId: string | null;
 }
