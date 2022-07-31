@@ -20,10 +20,6 @@ npm install
 ### Running application
 
 ```
-docker compose up 
-```
-or 
-```
 npm run docker:compose
 ```
 
