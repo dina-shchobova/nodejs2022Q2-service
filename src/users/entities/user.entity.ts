@@ -30,12 +30,14 @@ export class User implements IUser {
   @UpdateDateColumn()
   updatedAt: number;
 
-  // constructor(partial: Partial<User>) {
-  //   Object.assign(this, partial);
-  // }
-
   toResponse() {
     const { id, login, version, createdAt, updatedAt } = this;
-    return { id, login, version, createdAt, updatedAt };
+    return {
+      id,
+      login,
+      version,
+      createdAt: +new Date(createdAt),
+      updatedAt: +new Date(updatedAt),
+    };
   }
 }
