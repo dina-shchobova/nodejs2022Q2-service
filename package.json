@@ -19,8 +19,14 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "docker:compose": "docker compose up --build",
-    "scan": "docker scan nodejs2022q2-service_rest-service"
+    "docker:compose-build": "docker compose up --build",
+    "docker:compose": "docker-compose up",
+    "scan": "docker scan nodejs2022q2-service_rest-service",
+    "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
+    "migration:create": "npm run build && npm run typeorm migration:create ./src/migrations/post",
+    "migration:generate": "npm run build && npm run typeorm migration:generate -- -n",
+    "migration:run": "npm run build && npm run typeorm migration:run",
+    "migration:down": "npm run typeorm migration:revert"
   },
   "dependencies": {
     "@nestjs/class-validator": "^0.13.4",
