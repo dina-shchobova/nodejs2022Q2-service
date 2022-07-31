@@ -12,6 +12,6 @@ export default {
   database: process.env.POSTGRES_DB,
   synchronize: false,
   entities: ['dist/**/entities/*.entity.js'],
-  migrations: ['dist/**/migrations/*.js'],
+  migrations: ['dist/migrations/*.js'],
   migrationsRun: true,
 } as DataSourceOptions;
