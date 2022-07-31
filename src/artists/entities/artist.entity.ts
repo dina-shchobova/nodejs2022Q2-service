@@ -1,14 +1,14 @@
-import { CreateArtistDto } from '../dto/create-artist.dto';
 import { IArtist } from '../../utils/interfaces';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+@Entity('artist')
 export class Artist implements IArtist {
+  @PrimaryGeneratedColumn('uuid')
   id: string;
-  name: string;
-  grammy: boolean;
 
-  constructor(id: string, createArtistDto: CreateArtistDto) {
-    this.id = id;
-    this.name = createArtistDto.name;
-    this.grammy = createArtistDto.grammy;
-  }
+  @Column()
+  name: string;
+
+  @Column()
+  grammy: boolean;
 }

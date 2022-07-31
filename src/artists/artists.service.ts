@@ -1,54 +1,47 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
-import { artists, favs, tracks } from '../data/data';
-import { v4 } from 'uuid';
 import { Artist } from './entities/artist.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ArtistsService {
-  create(createArtistDto: CreateArtistDto) {
-    const newArtist = new Artist(v4(), createArtistDto);
-    artists.push(newArtist);
-    return newArtist;
+  constructor(
+    @InjectRepository(Artist)
+    private artistsRepository: Repository<Artist>,
+  ) {}
+
+  async create(createArtistDto: CreateArtistDto) {
+    const newArtist = this.artistsRepository.create(createArtistDto);
+    return await this.artistsRepository.save(newArtist);
   }
 
-  findAll() {
-    return artists;
+  async findAll() {
+    return await this.artistsRepository.find();
   }
 
-  findOne(id: string) {
-    const artist = artists.find((artist) => artist.id === id);
+  async findOne(id: string) {
+    const artist = await this.artistsRepository.findOne({ where: { id: id } });
     if (!artist) {
       throw new NotFoundException('Artist not found');
     }
     return artist;
   }
 
-  update(id: string, updateArtistDto: UpdateArtistDto) {
-    let artist = artists.find((artist) => artist.id === id);
+  async update(id: string, updateArtistDto: UpdateArtistDto) {
+    let artist = await this.artistsRepository.findOne({ where: { id: id } });
     if (!artist) {
       throw new NotFoundException('Artist not found');
     }
     artist = { ...artist, ...updateArtistDto };
-    return artist;
+    return await this.artistsRepository.save(artist);
   }
 
-  remove(id: string) {
-    const deletedArtistIndex = artists.findIndex((artist) => artist.id === id);
-    if (deletedArtistIndex === -1) {
+  async remove(id: string) {
+    const result = await this.artistsRepository.delete({ id });
+    if (result.affected === 0) {
       throw new NotFoundException('Artist not found');
-    }
-    artists.splice(deletedArtistIndex, 1);
-    const trackIndex = tracks.findIndex((track) => track.artistId === id);
-    if (trackIndex !== -1) {
-      tracks[trackIndex].artistId = null;
-    }
-    const favArtistIndex = favs.artists.findIndex(
-      (artistId) => artistId === id,
-    );
-    if (favArtistIndex !== -1) {
-      favs.artists.splice(favArtistIndex, 1);
     }
   }
 }
