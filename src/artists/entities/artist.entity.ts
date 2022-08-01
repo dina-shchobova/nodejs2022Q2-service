@@ -1,7 +1,14 @@
 import { IArtist } from '../../utils/interfaces';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Album } from '../../albums/entities/album.entity';
 import { Track } from '../../tracks/entities/track.entity';
+import { Favorite } from '../../favorites/entities/favorites.entity';
 
 @Entity('artist')
 export class Artist implements IArtist {
@@ -23,4 +30,9 @@ export class Artist implements IArtist {
     onDelete: 'SET NULL',
   })
   tracks: Track[];
+
+  @ManyToOne(() => Favorite, (favorite) => favorite.artists, {
+    onDelete: 'CASCADE',
+  })
+  favorites: Favorite;
 }

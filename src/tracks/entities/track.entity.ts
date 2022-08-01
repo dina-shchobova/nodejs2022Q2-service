@@ -2,6 +2,7 @@ import { ITrack } from '../../utils/interfaces';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Artist } from '../../artists/entities/artist.entity';
 import { Album } from '../../albums/entities/album.entity';
+import { Favorite } from '../../favorites/entities/favorites.entity';
 
 @Entity('track')
 export class Track implements ITrack {
@@ -33,4 +34,9 @@ export class Track implements ITrack {
 
   @Column()
   duration: number;
+
+  @ManyToOne(() => Favorite, (favorite) => favorite.tracks, {
+    onDelete: 'CASCADE',
+  })
+  favorites: Favorite;
 }
