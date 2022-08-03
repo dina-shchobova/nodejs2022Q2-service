@@ -16,9 +16,9 @@ import { AuthModule } from './auth/auth.module';
     AlbumsModule,
     TracksModule,
     FavoritesModule,
+    AuthModule,
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '../.env' }),
     TypeOrmModule.forRoot(configService),
-    AuthModule,
   ],
 })
 export class AppModule {}
