@@ -2,7 +2,6 @@ import {
   Injectable,
   ForbiddenException,
   NotFoundException,
-  BadRequestException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -30,7 +29,7 @@ export class UsersService {
   async findOne(id: string) {
     const user = await this.userRepository.findOne({ where: { id: id } });
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException('User is not found');
     }
     return user.toResponse();
   }
@@ -40,7 +39,7 @@ export class UsersService {
       where: { id: id },
     });
     if (!updatedUser) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException('User is not found');
     }
     if (updatedUser.password !== updateUserDto.oldPassword) {
       throw new ForbiddenException('Wrong old password');
@@ -53,16 +52,11 @@ export class UsersService {
   async remove(id: string) {
     const result = await this.userRepository.delete({ id });
     if (result.affected === 0) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException('User is not found');
     }
   }
 
   async isLoginExists(login: string) {
-    const user = await this.userRepository.findOne({ where: { login } });
-    if (user) {
-      throw new BadRequestException(
-        `User with login = ${login} already exists`,
-      );
-    }
+    return await this.userRepository.findOne({ where: { login } });
   }
 }
