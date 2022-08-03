@@ -746,3 +746,28 @@ paths:
           description: Bad request. ArtistId is invalid (not uuid)
         404:
           description: Artist was not found.
+  /auth/signup:
+    post:
+      tags:
+        - Authentication
+      summary: Add user
+      description: Add user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login:
+                  type: string
+                password:
+                  type: string
+              required:
+                - login
+                - password
+      responses:
+        201:
+          description: Added successfully
+        400:
+          description: Bad request. Login or password is invalid
