@@ -52,7 +52,6 @@ export class FavoritesController {
   removeFavArtist(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
   ) {
-    console.log('id deleted artist = ', id);
     return this.favoritesService.removeFavArtist(id);
   }
 }
