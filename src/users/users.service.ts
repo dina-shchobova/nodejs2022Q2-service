@@ -56,7 +56,7 @@ export class UsersService {
     }
   }
 
-  async isLoginExists(login: string) {
-    return await this.userRepository.findOne({ where: { login } });
+  async findByLogin(searchedLogin: string) {
+    return await this.userRepository.findBy({ login: searchedLogin });
   }
 }

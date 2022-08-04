@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  ForbiddenException,
-  Injectable,
-} from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
@@ -16,27 +12,28 @@ export class AuthService {
   ) {}
 
   async login(userDto: CreateUserDto) {
-    const user = await this.usersService.isLoginExists(userDto.login);
-    if (!user) {
+    let user;
+    const users = await this.usersService.findByLogin(userDto.login);
+    if (users.length === 0) {
       throw new ForbiddenException('User does not exist');
+    } else {
+      for (const user1 of users) {
+        const isValidPassword = await bcrypt.compare(
+          userDto.password,
+          user1.password,
+        );
+        if (isValidPassword) {
+          user = user1;
+        }
+      }
     }
-    const isPasswordEquals = await bcrypt.compare(
-      userDto.password,
-      user.password,
-    );
-    if (!isPasswordEquals) {
+    if (!user) {
       throw new ForbiddenException('Password is incorrect');
     }
     return await this.generateToken(user);
   }
 
   async signup(createUserDto: CreateUserDto) {
-    const user = await this.usersService.isLoginExists(createUserDto.login);
-    if (user) {
-      throw new BadRequestException(
-        `User with login = ${createUserDto.login} already exists`,
-      );
-    }
     const hashPassword = await bcrypt.hash(createUserDto.password, 5);
     const newUser = await this.usersService.create({
       ...createUserDto,
@@ -48,7 +45,7 @@ export class AuthService {
   async generateToken(user) {
     const payload = { login: user.login, id: user.id };
     return {
-      token: this.jwtService.sign(payload),
+      accessToken: this.jwtService.sign(payload),
     };
   }
 }
