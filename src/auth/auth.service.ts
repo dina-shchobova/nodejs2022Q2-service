@@ -72,17 +72,17 @@ export class AuthService {
     });
   }
 
-  async refresh(userId, body) {
-    const { refreshToken } = body;
+  async refresh(refreshToken) {
     if (!refreshToken) {
       throw new UnauthorizedException('No refreshToken in body');
     }
-    const user = await this.usersService.findById(userId);
+    const payload = this.jwtService.decode(refreshToken) as JwtPayload;
+    console.log(payload);
+    const user = await this.usersService.findById(payload.id);
     if (!user) {
       throw new ForbiddenException('User does not exist');
     }
     if (user.hashedRefreshToken === refreshToken) {
-      const payload = this.jwtService.decode(refreshToken) as JwtPayload;
       if (payload.exp < +Date.now() / 1000) {
         throw new ForbiddenException('Refresh token is expired');
       }
