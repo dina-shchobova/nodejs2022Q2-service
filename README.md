@@ -6,9 +6,9 @@
 ```
 git clone git@github.com:dina-shchobova/nodejs2022Q2-service.git
 ```
-3. Go to postgreSQL_ORM branch 
+3. Go to authentication_and_authorization branch 
 ```
-git checkout postgreSQL_ORM
+git checkout authentication_and_authorization
 ```
 
 ### Installing NPM modules
@@ -30,14 +30,8 @@ npm run docker:compose
 After starting the app on port (4000 as default) you can open
 in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
 
-### Scanning application
+### Running test auth
 
 ```
-npm run scan 
-```
-
-### Auto-fix and format
-
-```
-npm run lint
+npm run test:auth 
 ```
