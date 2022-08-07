@@ -77,7 +77,6 @@ export class AuthService {
       throw new UnauthorizedException('No refreshToken in body');
     }
     const payload = this.jwtService.decode(refreshToken) as JwtPayload;
-    console.log(payload);
     const user = await this.usersService.findById(payload.id);
     if (!user) {
       throw new ForbiddenException('User does not exist');
