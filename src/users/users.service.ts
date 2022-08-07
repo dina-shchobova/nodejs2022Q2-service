@@ -59,4 +59,16 @@ export class UsersService {
   async findByLogin(searchedLogin: string) {
     return await this.userRepository.findBy({ login: searchedLogin });
   }
+
+  async findById(id: string) {
+    return await this.userRepository.findOne({ where: { id: id } });
+  }
+
+  async updateRefreshToken(id: string, token: string) {
+    const updatedUser = await this.userRepository.findOne({
+      where: { id: id },
+    });
+    updatedUser.hashedRefreshToken = token;
+    await this.userRepository.save(updatedUser);
+  }
 }
