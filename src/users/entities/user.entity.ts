@@ -30,6 +30,11 @@ export class User implements IUser {
   @UpdateDateColumn()
   updatedAt: number;
 
+  @Column({
+    nullable: true,
+  })
+  hashedRefreshToken?: string;
+
   toResponse() {
     const { id, login, version, createdAt, updatedAt } = this;
     return {

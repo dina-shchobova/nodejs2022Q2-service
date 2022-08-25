@@ -6,9 +6,12 @@ import {
   Delete,
   ParseUUIDPipe,
   HttpCode,
+  UseGuards,
 } from '@nestjs/common';
 import { FavoritesService } from './favorites.service';
+import { JwtAuthGuard } from '../auth/jwtAuthGuard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('favs')
 export class FavoritesController {
   constructor(private readonly favoritesService: FavoritesService) {}
@@ -52,7 +55,6 @@ export class FavoritesController {
   removeFavArtist(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
   ) {
-    console.log('id deleted artist = ', id);
     return this.favoritesService.removeFavArtist(id);
   }
 }
