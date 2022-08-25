@@ -5,6 +5,7 @@ export interface IUser {
   version: number;
   createdAt: number;
   updatedAt: number;
+  toResponse: () => any;
 }
 
 export interface IArtist {
