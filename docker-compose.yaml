@@ -1,0 +1,43 @@
+version: '3.9'
+services:
+  rest-service:
+    container_name: rest-service
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - ${PORT}:${PORT}
+    env_file:
+      - .env
+    networks:
+      - postgres
+    depends_on:
+      - postgres
+    volumes:
+      - ./:/nodejs2022Q2-service
+      - ignore:/nodejs2022Q2-service/node_modules/
+  postgres:
+    container_name: postgres-service
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: ./src/db/Dockerfile
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    env_file:
+      - .env
+    environment:
+      PGDATA: /var/lib/postgresql/data
+    networks:
+      - postgres
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+  ignore:
+  postgres:
