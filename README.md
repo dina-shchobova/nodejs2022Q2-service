@@ -1,11 +1,6 @@
 # Home Library Service
 
-## Prerequisites
-
-- Git - [Download & Install Git](https://git-scm.com/downloads).
-- Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
-
-## Downloading
+### Downloading
 1. Change the current working directory to the location where you want the cloned directory.
 2. Clone a repo
 ```
